@@ -64,7 +64,7 @@ def draw_random_point():
     return random_point
 
 
-def point_in_circle(point, circle):
+def point_in_circle(point, circle):  #TODO: Figure out why the code is overshooting pi ~3.6 (SEE Line 122)
     """ is a given point inside a given circle"""
     delta_x = abs(circle.x - point.x)
     delta_y = abs(circle.y - point.y)
@@ -84,11 +84,11 @@ points_in_circle = 0
 points_outside_circle = 1  # initialize to 1 to avoid dividing by 0
 
 # timer
-pygame.time.set_timer(pygame.USEREVENT, 200)
+pygame.time.set_timer(pygame.USEREVENT, 10)
 
 run = True
 play = True
-debug = False
+debug = False  # places a point at the mouse position each update tick
 while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -98,7 +98,7 @@ while run:
                 play = not play
         if event.type == pygame.USEREVENT and play and debug:
             pos = pygame.mouse.get_pos()
-            new_point = Point(pos[0], pos[1]) #draw_random_point()
+            new_point = Point(pos[0], pos[1])
             point_array.append(new_point)
             if point_in_circle(new_point, circle):
                 points_in_circle += 1
@@ -119,10 +119,9 @@ while run:
         point.draw()
     print(f'in circle: {points_in_circle} \n'
           f'outside circle: {points_outside_circle}')
-    pi_estimate = 4 * points_in_circle / points_outside_circle  # calculate_pi_estimate(points_in_circle, points_outside_circle)
+    pi_estimate = points_in_circle / points_outside_circle  # calculate_pi_estimate(points_in_circle, points_outside_circle)
     render_text(f'pi estimate: {pi_estimate}', (SCREEN_SIDE_SIZE // 2 - 150, SCREEN_SIDE_SIZE - 100),
                 color=PURPLE)  # TODO: Center text
-
-    clock.tick(FPS)
     print_fps()
+    clock.tick(FPS)
     pygame.display.update()
