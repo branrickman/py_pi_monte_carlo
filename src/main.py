@@ -99,8 +99,14 @@ while run:
         if event.type == pygame.QUIT:
             exit()
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE:  # pause
                 play = not play
+            if event.key == pygame.K_r:  # reset
+                point_array = []
+                points_in_circle = 0
+                points_outside_circle = 1
+                pi_estimate = 0
+                print("Simulation reset.")
         if event.type == pygame.USEREVENT+1 and play and debug:
             pos = pygame.mouse.get_pos()
             new_point = Point(pos[0], pos[1])
