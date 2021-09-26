@@ -19,14 +19,18 @@ YELLOW = "#F6AE2D"
 ORANGE = "#F26419"
 PURPLE = "#5E3E7A"
 GREY = "#464946"
+BLACK = (0, 0, 0)
 
 # import font
 selected_font = pygame.font.Font('assets/font.ttf', 30)  # https://fonts.google.com/specimen/Inconsolata
 
 
-def render_text(text, position, color=GREY):
-    """ renders input text at a given position in a given color (RGB or Hex) """
-    rendered_text = selected_font.render(text, True, color)
+def render_text(text, position, text_color=BLACK, box_color=YELLOW, box=True):
+    """ renders input text at a given position in a given color (RGB or Hex) with an optional background box """
+    rendered_text = selected_font.render(text, True, text_color)
+    if box:
+        pygame.draw.rect(screen, box_color,
+                         (position[0], position[1], rendered_text.get_width(), rendered_text.get_height()))
     screen.blit(rendered_text, position)
 
 
@@ -86,7 +90,6 @@ points_in_circle = 0
 points_outside_circle = 1  # initialize to 1 to avoid dividing by 0
 pi_estimate = 0
 
-
 # timers
 pygame.time.set_timer(pygame.USEREVENT + 1, 1)
 pygame.time.set_timer(pygame.USEREVENT + 2, 1000)
@@ -107,7 +110,7 @@ while run:
                 points_outside_circle = 1
                 pi_estimate = 0
                 print("Simulation reset.")
-        if event.type == pygame.USEREVENT+1 and play and debug:
+        if event.type == pygame.USEREVENT + 1 and play and debug:
             pos = pygame.mouse.get_pos()
             new_point = Point(pos[0], pos[1])
             point_array.append(new_point)
@@ -115,7 +118,7 @@ while run:
                 points_in_circle += 1
             else:
                 points_outside_circle += 1
-        if event.type == pygame.USEREVENT+1 and play and not debug:
+        if event.type == pygame.USEREVENT + 1 and play and not debug:
             # draw new point
             new_point = choose_random_point()
             point_array.append(new_point)
@@ -136,9 +139,9 @@ while run:
         pi_estimate = round(4 * points_in_circle / (points_outside_circle + points_in_circle), 5)
         update_estimate_this_frame = False
 
-    render_text(f'pi estimate: {pi_estimate}', (SCREEN_SIDE_SIZE // 2 - 150, SCREEN_SIDE_SIZE - 100),
-                color=PURPLE)  # TODO: Center text
+    render_text(f'pi estimate: {pi_estimate}',
+                (SCREEN_SIDE_SIZE // 2 - 150, SCREEN_SIDE_SIZE - 100))  # TODO: Center text
 
-    print_fps()  #TODO not working for some reason
+    print_fps()  # TODO not working for some reason
     clock.tick(FPS)
     pygame.display.update()
