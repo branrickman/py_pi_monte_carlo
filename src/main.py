@@ -142,6 +142,6 @@ while run:
     render_text(f'pi estimate: {pi_estimate}',
                 (SCREEN_SIDE_SIZE // 2 - 150, SCREEN_SIDE_SIZE - 100))  # TODO: Center text
 
-    print_fps()  # TODO not working for some reason
+    print_fps()
     clock.tick(FPS)
     pygame.display.update()
